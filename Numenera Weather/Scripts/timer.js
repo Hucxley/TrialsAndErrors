@@ -26,11 +26,32 @@ function count(){
     if (isActive)
     {
         counter++;
-        timeNow = advanceTime(timeNow, counter);
-        $('#counter').text(timeNow.Seconds);
+        timeDisplay = timeNow + counter;
+        console.log("counting: " + timeDisplay);
+        updateDisplay(timeDisplay);
 
-        
     }
+
+}
+
+function updateDisplay(timeNow) {
+    console.log("updating: " + timeNow);
+    years = Math.floor(timeNow / 313);
+    console.log(years);
+    months = Math.floor(timeNow % 313);
+    console.log(years);
+    days = Math.floor(months / 28);
+    console.log(days);
+    hours = Math.floor(days % 28);
+    console.log(hours);
+    minutes = Math.floor(hours / 60);
+    console.log(minutes);
+    seconds = Math.floor(hours % 60);
+    console.log(seconds);
+    currentTime = { "years": years, "months": months, "days": days, "hours": hours, "minutes": minutes, "seconds": seconds };
+    console.log(currentTime);
+    $('#counter').text(currentTime.days + "." + currentTime.months + "." + currentTime.years + "_" + currentTime.hours + ":" + currentTime.minutes + ":" + currentTime.seconds);
+
 
 }
 
@@ -41,42 +62,40 @@ function pauseCounter() {
 }
 
 function initAttributes () {
-    var years, months, days, hours, minutes, seconds;
+    //var years, months, days, hours, minutes, seconds;
     timeNow = timeConstruct();
-    console.log(timeNow);
+    console.log("init: " +timeNow);
     pmFlag = false;
-    years = timeNow.Years;
-    months = timeNow.Months;
-    days = timeNow.Days;
-    hours = timeNow.Hours;
-    if (hours > 22 || hours < 4) {
-        pmFlag = true;
-    }
-    if (hours > 14) {
+    //years = timeNow.Years;
+    //months = timeNow.Months;
+    //days = timeNow.Days;
+    //hours = timeNow.Hours;
+    //if (hours > 22 || hours < 4) {
+    //    pmFlag = true;
+    //}
+    //if (hours > 14) {
 
-        hours -= 14;
-    }
+    //    hours -= 14;
+    //}
 
-    minutes = timeNow.Minutes;
-    seconds = timeNow.Seconds;
-    minutes = timeNow.Minutes;
+    //minutes = timeNow.Minutes;
+    //seconds = timeNow.Seconds;
+    //minutes = timeNow.Minutes;
     console.log("clock set, handling weather")
     return timeNow;
 
 };
 
-function timeConstruct() {
-    years = Math.floor((Math.random() * 3500) + 1);
-    months = Math.floor((Math.random() * 12) + 1);
-    days = Math.floor((Math.random() * 26) + 1);
-    hours = Math.floor(Math.random() * 28);
-    minutes = Math.floor(Math.random() * 60);
-    seconds = Math.floor(Math.random() * 60);
-    timeNow = { "Years": years, "Months": months, "Days": days, "Hours": hours, "Minutes": minutes, "Seconds": seconds };
-    return timeNow;
+function timeConstruct(seed) {
+
+    seconds = seed || Math.floor((Math.random() * 9000000000000000) + 1);
+    console.log(seconds);
+    return seconds;
 }
 
 function advanceTime(timeNow, c) {
+    console.log("advanceTime: " + timeNow.Seconds);
+    console.log("advanceTime c: " + c);
     timeNow.Seconds = timeNow.Seconds + c;
     return timeNow;
 }
@@ -103,6 +122,6 @@ function backgroundImageChanger(month, day, hour, minute, pmFlag) {
 $(document).ready(function () {
     timeNow = initAttributes();
     console.log("attributes set");
-    $('#counter').text(timeNow.Seconds);
-    backgroundImageChanger(months, days, hours, minutes, pmFlag);
+    $('#counter').text(timeNow);
+    //backgroundImageChanger(months, days, hours, minutes, pmFlag);
 })
